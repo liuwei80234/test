@@ -1,0 +1,81 @@
+package com.aisile.content.service.impl;
+
+import java.util.List;
+import java.util.Map;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import com.aisile.content.service.ContentCateService;
+import com.aisile.content.service.ContentService;
+import com.aisile.mapper.TbContentCategoryMapper;
+import com.aisile.mapper.TbContentMapper;
+import com.aisile.pojo.TbContent;
+import com.aisile.pojo.TbContentCategory;
+import com.aisile.pojo.TbContentExample;
+import com.aisile.pojo.TbContentExample.Criteria;
+import com.aisile.pojo.entity.pageResult;
+import com.alibaba.dubbo.config.annotation.Service;
+import com.github.pagehelper.Page;
+import com.github.pagehelper.PageHelper;
+
+
+@Service 
+public class ContentServiceImpl implements ContentService {
+
+	@Autowired
+	private TbContentMapper tbContentMapper;
+	@Override
+	public List<TbContent> findAll() {
+		// TODO Auto-generated method stub
+		//条件为空 查询全部 
+		return tbContentMapper.selectByExample(null);
+	}
+	@Override
+	public pageResult findPage(int pageNum, int pageSize) {
+		// TODO Auto-generated method stub
+		PageHelper.startPage(pageNum, pageSize);
+		Page<TbContent>  pageinfo= (Page<TbContent>)tbContentMapper.selectByExample(null);
+		return new pageResult(pageinfo.getTotal(), pageinfo.getResult());
+	}
+	@Override
+	public void add(TbContent tbContent) {
+		// TODO Auto-generated method stub
+		tbContentMapper.insert(tbContent);
+	}
+	@Override
+	public void update(TbContent tbContent) {
+		// TODO Auto-generated method stub
+		tbContentMapper.updateByPrimaryKey(tbContent);
+	}
+	@Override
+	public TbContent findOne(Long id) {
+		// TODO Auto-generated method stub
+		return tbContentMapper.selectByPrimaryKey(id);
+	}
+	@Override
+	public void delete(Long[] ids) {
+		// TODO Auto-generated method stub
+		for(Long id:ids){
+			tbContentMapper.deleteByPrimaryKey(id);
+		}		
+	}
+	@Override
+	public pageResult findSearch(TbContent tbContent, int pageNum, int pageSize) {
+		// TODO Auto-generated method stub
+		PageHelper.startPage(pageNum, pageSize);
+		Page<TbContent>  pageinfo= (Page<TbContent>)tbContentMapper.selectByExample(null);
+		return new pageResult(pageinfo.getTotal(), pageinfo.getResult());
+	}
+	@Override
+	public List<TbContent> findByCategoryId(Long categoryId) {
+		// TODO Auto-generated method stub
+		TbContentExample contentexample = new TbContentExample();
+		Criteria criteria = contentexample.createCriteria();
+		criteria.andCategoryIdEqualTo(categoryId);
+		criteria.andStatusEqualTo("1");
+		contentexample.setOrderByClause("sort_order");
+		return tbContentMapper.selectByExample(contentexample);
+	}
+
+	
+
+}

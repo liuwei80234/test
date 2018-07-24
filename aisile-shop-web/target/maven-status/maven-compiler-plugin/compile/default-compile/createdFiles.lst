@@ -1,0 +1,7 @@
+com\aisile\shop\controller\GoodController.class
+com\aisile\shop\controller\itemcatController.class
+com\aisile\shop\controller\LoginController.class
+com\aisile\shop\controller\typeTemplateController.class
+com\aisile\shop\controller\UploadController.class
+com\aisile\shop\service\UserDetailsServiceImpl.class
+com\aisile\shop\controller\SellerController.class
